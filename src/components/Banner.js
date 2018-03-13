@@ -10,6 +10,7 @@ const header = css`
 
 const titleStyle = css`
   font-size: 3.5em;
+  text-transform: uppercase;
 `;
 
 class Banner extends Component {

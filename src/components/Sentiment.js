@@ -7,7 +7,7 @@ class Sentiment extends Component {
       <div
         className={css`
           grid-column: 1;
-          grid-row: 2;
+          grid-row: 3;
         `}
       >
         <h3>Sentiment</h3>

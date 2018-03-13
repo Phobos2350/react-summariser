@@ -6,8 +6,8 @@ class KeyTerms extends Component {
     return (
       <div
         className={css`
-          grid-column: 1;
-          grid-row: 3;
+          grid-column: 2;
+          grid-row: 2;
         `}
       >
         <h3>Key Terms</h3>

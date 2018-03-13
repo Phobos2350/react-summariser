@@ -13,7 +13,7 @@ class Stats extends Component {
     return (
       <div
         className={css`
-          grid-column: 2;
+          grid-column: 1;
           grid-row: 2;
         `}
       >
