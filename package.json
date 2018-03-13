@@ -5,6 +5,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "emotion": "^9.0.2",
+    "flow-bin": "^0.67.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
     "node-readability": "^3.0.0",
@@ -24,6 +25,7 @@
     ]
   },
   "scripts": {
+    "flow": "flow",
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import styled, { css } from 'react-emotion';
 import cheerio from 'cheerio';
@@ -29,8 +30,8 @@ const appStyle = css`
 `;
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       namedEnts: [],
       keyTerms: [],
