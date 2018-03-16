@@ -38,7 +38,6 @@ class App extends Component {
       stats: [],
       summary: [],
       isLoading: false,
-      timer: 0,
       status: 0
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -75,6 +74,7 @@ class App extends Component {
         .then(result => {
           let parsed = JSON.parse(result);
           let t1 = performance.now();
+          console.log('Took ' + (t1 - t0) + 'ms');
           this.setState({
             namedEnts: parsed[0]['Named Entities'],
             keyTerms: parsed[1]['Key Terms'],
@@ -82,8 +82,7 @@ class App extends Component {
             summary: parsed[3]['Summary'],
             sentiment: senti,
             isLoading: false,
-            timer: t1 - t0,
-            status: 3
+            status: 0
           });
         });
     });
@@ -97,8 +96,7 @@ class App extends Component {
       summary,
       sentiment,
       isLoading,
-      status,
-      timer
+      status
     } = this.state;
 
     return (
@@ -118,7 +116,7 @@ class App extends Component {
             <Form handleSubmit={this.handleSubmit} />
           </Box>
           <Box width={[1, 1, 1 / 2]} m="0 auto" px={[3, 3, 0]}>
-            <Loading loadState={status} time={timer} />
+            <Loading loadState={status} />
             {summary.length > 0 && (
               <Results>
                 <Summary data={summary} />
