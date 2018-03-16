@@ -184,7 +184,7 @@ const nyTimes = html => {
         }
       } else {
         content += text['data'];
-        if (text['next'] === null) content += '\\n\\n';
+        if (text['next'] === null) content += ' \n';
       }
     }
   });
