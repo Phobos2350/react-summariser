@@ -118,7 +118,7 @@ class App extends Component {
             <Form handleSubmit={this.handleSubmit} />
           </Box>
           <Box width={[1, 1, 1 / 2]} m="0 auto" px={[3, 3, 0]}>
-            <Loading loading={isLoading} loadState={status} time={timer} />
+            <Loading loadState={status} time={timer} />
             {summary.length > 0 && (
               <Results>
                 <Summary data={summary} />
