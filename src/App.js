@@ -74,7 +74,7 @@ class App extends Component {
         .then(result => {
           let parsed = JSON.parse(result);
           let t1 = performance.now();
-          console.log('Took ' + (t1 - t0) + 'ms');
+          console.log('Took ' + Math.ceil(t1 - t0) + 'ms');
           this.setState({
             namedEnts: parsed[0]['Named Entities'],
             keyTerms: parsed[1]['Key Terms'],
