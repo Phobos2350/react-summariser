@@ -10,6 +10,7 @@ const statusStyle = css`
 class Loading extends Component {
   render() {
     let status = '';
+    let time = this.props.time;
     switch (this.props.loadState) {
       case 0:
         status = '';
@@ -20,6 +21,8 @@ class Loading extends Component {
       case 2:
         status = 'Summarising...';
         break;
+      case 3:
+        status = 'Took: ' + time + 'ms(' + time / 1000 + ')s';
       default:
         status = '';
         break;
