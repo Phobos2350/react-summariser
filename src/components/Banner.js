@@ -9,15 +9,23 @@ const header = css`
 `;
 
 const titleStyle = css`
-  font-size: 3.5em;
+  font-size: 3.5rem;
   text-transform: uppercase;
+`;
+
+const spanStyle = css`
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #ddd;
 `;
 
 class Banner extends Component {
   render() {
     return (
       <header className={header}>
-        <h1 className={titleStyle}>Article Summariser</h1>
+        <h1 className={titleStyle}>
+          Summariser <span className={spanStyle}>beta</span>
+        </h1>
       </header>
     );
   }
