@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { css } from 'react-emotion';
 
 class Stats extends Component {
   render() {
@@ -11,12 +10,7 @@ class Stats extends Component {
     const smog = Math.floor(this.props.data['Before_SMOG']);
 
     return (
-      <div
-        className={css`
-          grid-column: 1;
-          grid-row: 2;
-        `}
-      >
+      <div>
         <h3>Stats</h3>
         <ul>
           <li>Percent Reduction: {reduction}%</li>

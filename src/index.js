@@ -1,71 +1,151 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import WebFont from 'webfontloader';
+import { HashRouter as Router } from 'react-router-dom';
 import { injectGlobal } from 'react-emotion';
+
+import * as global from './utils/config';
+
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-const backgrounds = [
-  `background: #FC466B;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);
-    background: linear-gradient(to right, #3F5EFB, #FC466B);
-    `,
-  `background: #ee0979;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #ff6a00, #ee0979);
-    background: linear-gradient(to right, #ff6a00, #ee0979);
-    `,
-  `background: #00F260;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0575E6, #00F260);
-    background: linear-gradient(to right, #0575E6, #00F260);
-    `,
-  `background: #ad5389;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #3c1053, #ad5389);
-    background: linear-gradient(to right, #3c1053, #ad5389);
-    `,
-  `background: #DA4453;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #89216B, #DA4453);
-    background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    `,
-  `background: #bc4e9c;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #f80759, #bc4e9c);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    `,
-  `background: #0f0c29;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    `,
-  `background: #667db6;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    `,
-  `background: #06beb6;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #48b1bf, #06beb6);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #48b1bf, #06beb6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    `
-];
-
-const rand = Math.floor(Math.random() * (backgrounds.length - 1));
+WebFont.load({
+  google: {
+    families: ['Lato', 'Merriweather:300i']
+  }
+});
 
 injectGlobal`
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,800');
 
-  html {
-    position: relative;
-    min-height: 100%;
+  * {
+    box-sizing: border-box;
   }
 
-  body {
+  html, body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    color: #fff;
-    font-family: 'Open Sans', sans-serif;
-    ${backgrounds[rand]}
   }
 
-  ul, ol {
-      list-style: none;
-      padding: 0;
+  
+  body {
+    font-family: 'Lato', sans-serif;
+    font-size: calc(12px + 1vw);
+    color: ${global.PRI_COLOUR};
+    background-color: ${global.BG_COLOUR};
   }
+
+  a, button, legend, input, textarea { 
+    font-family: 'Merriweather', serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  a {
+    background-image: none;
+    color: ${global.LINK_COLOUR};
+    text-decoration: none;
+    text-shadow: none;
+    border-bottom: 1px dashed ${global.LINK_COLOUR};
+    display: inline-block;
+    position: relative;
+    padding: 0 .2em;
+    -webkit-transition: all 250ms;
+    transition: all 250ms;
+    z-index: 200;
+    &:before {
+      content: "";
+      z-index: -1;
+      width: 100%;
+      height: 0%;
+      background: ${global.LINK_HOVER_COLOUR};
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      transition: height 250ms;
+    }
+    &:hover{
+      cursor: pointer;
+      color: #fff;
+      border-color:transparent;
+      &:before{
+        height:100%;
+      }
+    }
+  }
+
+  button {
+    background: none;
+    color: ${global.PRI_COLOUR};
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    padding: 0.75rem;
+    border: 1px solid ${global.PRI_COLOUR};
+    transition: all 250ms;
+    text-transform: uppercase;
+    width: 100%;
+    margin: 1rem auto 0 auto;
+    &:before {
+      content: '';
+      z-index: -1;
+      width: 100%;
+      height: 0%;
+      background: ${global.LINK_HOVER_COLOUR};
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      transition: height 250ms;
+    }
+    &:hover {
+      border-color: transparent;
+      color: #fff;
+      &:before {
+        height: 100%;
+      }
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input, select, textarea {
+    resize: none;
+    font-size: 1rem;
+    display: inline-block;
+    background: #fff;
+    padding: 0.5rem;
+    line-height: 1.9;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    width: auto;
+    transition: all 750ms ease;
+    box-shadow: none;
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  ul, ol {
+    list-style: none;
+    padding: 0;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-family: 'Merriweather', serif;
+    font-weight: 300;
+    font-style: italic;
+    color: ${global.PRI_COLOUR};
+    text-transform: uppercase;
+  }
+
 `;
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById('root')
+);
 registerServiceWorker();

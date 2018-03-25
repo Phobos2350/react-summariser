@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import { css } from 'react-emotion';
 
 class Sentiment extends Component {
   render() {
     return (
-      <div
-        className={css`
-          grid-column: 1;
-          grid-row: 3;
-        `}
-      >
+      <div>
         <h3>Sentiment</h3>
         <ul>
           <li>Total Score: {this.props.data['score']}</li>

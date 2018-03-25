@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { css } from 'react-emotion';
 
+const summaryStyle = css`
+  grid-row: 1;
+  grid-column: 1 / 3;
+`;
+
 class Summary extends Component {
   render() {
     return (
-      <div
-        className={css`
-          grid-column: 1 / 3;
-          grid-row: 1;
-        `}
-      >
+      <div className={summaryStyle}>
         <h3>Summary</h3>
         {this.props.data.map((sentence, index) => (
           <p key={index}>{sentence}</p>

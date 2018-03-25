@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
-import { css } from 'react-emotion';
+import styled from 'react-emotion';
+import { FoldingCube } from 'better-react-spinkit';
 
-const statusStyle = css`
-  height: 3rem;
-  color: #fff;
-  text-transform: uppercase;
+import { LINK_HOVER_COLOUR } from '../utils/config';
+
+const LoadingContainer = styled('section')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+`;
+
+const Loader = styled('div')`
+  max-width: 50%;
+  text-align: center;
+`;
+
+const Spinner = styled('span')`
+  display: inline-block;
+`;
+
+const Status = styled('span')`
+  display: block;
 `;
 
 class Loading extends Component {
@@ -26,9 +43,16 @@ class Loading extends Component {
     }
 
     return (
-      <div>
-        <h2 className={statusStyle}>{status}</h2>
-      </div>
+      <LoadingContainer>
+        <Loader>
+          <Spinner>
+            <FoldingCube size={70} color={LINK_HOVER_COLOUR} />
+          </Spinner>
+          <Status>
+            <h3>{status}</h3>
+          </Status>
+        </Loader>
+      </LoadingContainer>
     );
   }
 }
