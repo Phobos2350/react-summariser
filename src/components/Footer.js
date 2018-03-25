@@ -4,7 +4,7 @@ import styled from 'react-emotion';
 const Foot = styled('footer')`
   flex-shrink: 0;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 `;
 
 class Footer extends Component {

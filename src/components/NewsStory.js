@@ -28,7 +28,7 @@ const Headline = styled('h3')`
 `;
 
 const SubHeading = styled('h4')`
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 400;
   padding-left: 0.3rem;
 `;

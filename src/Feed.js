@@ -33,7 +33,7 @@ const Form = styled('form')`
   }
 `;
 const Label = styled('label')`
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   line-height: 50px;
   display: inline-block;
   text-transform: uppercase;

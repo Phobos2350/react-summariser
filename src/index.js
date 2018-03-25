@@ -27,11 +27,10 @@ injectGlobal`
     margin: 0;
     padding: 0;
   }
-
   
   body {
     font-family: 'Lato', sans-serif;
-    font-size: calc(12px + 1vw);
+    font-size: 1rem;
     color: ${global.PRI_COLOUR};
     background-color: ${global.BG_COLOUR};
   }

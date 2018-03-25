@@ -10,7 +10,7 @@ const Head = styled('header')`
 `;
 
 const Nav = styled('ul')`
-  font-size: calc(12px + 1vw);
+  font-size: 1.5rem;
   font-weight: 600;
   margin-top: 1.5rem;
   text-transform: uppercase;
@@ -48,7 +48,7 @@ const NavItem = styled('li')`
 
 const Banner = styled('section')`
   & h1 {
-    font-size: calc(20px + 4vw);
+    font-size: 4rem;
   }
 `;
 
