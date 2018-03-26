@@ -13,8 +13,12 @@ import Summary from './Summary';
 import urlRegex from '../utils/url-regex';
 
 const cors = 'https://cors-anywhere.herokuapp.com/';
-let scrapeUrl = 'https://fierce-anchorage-50232.herokuapp.com/unfluff';
-let summariseUrl = 'https://safe-eyrie-25302.herokuapp.com/summarise';
+// Heroku-API
+//let scrapeUrl = 'https://fierce-anchorage-50232.herokuapp.com/unfluff';
+//let summariseUrl = 'https://safe-eyrie-25302.herokuapp.com/summarise';
+// Hasura-API
+let scrapeUrl = 'http://api.charisma48.hasura-app.io/unfluff';
+let summariseUrl = 'http://app.charisma48.hasura-app.io/summarise';
 
 //if (process.env.NODE_ENV !== 'production') {
 scrapeUrl = cors + scrapeUrl;
