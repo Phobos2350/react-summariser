@@ -20,7 +20,8 @@ class Footer extends Component {
             rel="noopener noreferrer"
           >
             AF02
-          </a>
+          </a>{' '}
+          - v0.6.0
         </p>
         <p>
           Powered by{' '}
