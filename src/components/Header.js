@@ -48,7 +48,7 @@ const NavItem = styled('li')`
 
 const Banner = styled('section')`
   & h1 {
-    font-size: 4rem;
+    font-size: 3.75rem;
   }
 `;
 
