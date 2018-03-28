@@ -3,11 +3,28 @@ import ReactDOM from 'react-dom';
 import WebFont from 'webfontloader';
 import { HashRouter as Router } from 'react-router-dom';
 import { injectGlobal } from 'react-emotion';
+import ApolloClient from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { ApolloProvider } from 'react-apollo';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import * as global from './utils/config';
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+
+const GRAPHQL_URL =
+  'https://data.conspicuously76.hasura-app.io/v1alpha1/graphql';
+
+const client = new ApolloClient({
+  link: createHttpLink({
+    uri: GRAPHQL_URL,
+    credentials: 'include' // Include this to send the cookie along with every request
+  }),
+  cache: new InMemoryCache({
+    addTypename: false
+  })
+});
 
 WebFont.load({
   google: {
@@ -142,9 +159,11 @@ injectGlobal`
 `;
 
 ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+  <ApolloProvider client={client}>
+    <Router>
+      <App />
+    </Router>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 registerServiceWorker();

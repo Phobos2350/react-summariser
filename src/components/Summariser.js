@@ -44,6 +44,7 @@ const Results = styled('div')`
 const jsonify = (text, length) => {
   return new Promise((resolve, reject) => {
     if (urlRegex().test(text)) {
+      console.log(`URL: ${text}`);
       getWebpage(text)
         .then(unfluffed => {
           //console.log(unfluffed)
@@ -144,6 +145,7 @@ class Summariser extends Component {
           let parsed = JSON.parse(result);
           let t1 = performance.now();
           console.log('Took ' + Math.ceil(t1 - t0) + 'ms');
+          console.log(parsed);
           this.setState({
             namedEnts: parsed[0]['Named Entities'],
             keyTerms: parsed[1]['Key Terms'],
