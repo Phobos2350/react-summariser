@@ -93,7 +93,7 @@ class Feed extends Component {
     this.handleSourceChange = this.handleSourceChange.bind(this);
     this.handleNumberChange = this.handleNumberChange.bind(this);
     this.handleKeywordChange = this.handleKeywordChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleFilterClick = this.handleFilterClick.bind(this);
   }
 
   handleSourceChange(event) {
@@ -124,7 +124,7 @@ class Feed extends Component {
     });
   }
 
-  handleClick(event) {
+  handleFilterClick(event) {
     event.preventDefault();
     this.setState({ articles: [] });
     let url =
@@ -249,7 +249,7 @@ class Feed extends Component {
             <button
               className={buttonStyle}
               name="filter"
-              onClick={this.handleClick}
+              onClick={this.handleFilterClick}
             >
               Filter
             </button>

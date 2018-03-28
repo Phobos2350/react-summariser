@@ -32,10 +32,16 @@ class Loading extends Component {
         status = '';
         break;
       case 1:
-        status = 'Fetching Article...';
+        status = 'Reading the Article...';
         break;
       case 2:
         status = 'Summarising...';
+        break;
+      case 3:
+        status = 'Checking Cache for Saved Summary...';
+        break;
+      case 4:
+        status = 'An Error Occurred';
         break;
       default:
         status = '';

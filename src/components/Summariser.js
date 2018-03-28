@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'react-emotion';
+import { graphql, compose } from 'react-apollo';
+
 import cheerio from 'cheerio';
 import sentiment from 'sentiment';
 
@@ -11,6 +13,8 @@ import Sentiment from './Sentiment';
 import Stats from './Stats';
 import Summary from './Summary';
 import urlRegex from '../utils/url-regex';
+
+import { QUERY_SUMMARY, MUTATION_SUMMARY_ADD } from '../graphql/queries';
 
 const cors = 'https://cors-anywhere.herokuapp.com/';
 // Heroku-API
@@ -44,7 +48,7 @@ const Results = styled('div')`
 const jsonify = (text, length) => {
   return new Promise((resolve, reject) => {
     if (urlRegex().test(text)) {
-      console.log(`URL: ${text}`);
+      //console.log(`URL: ${text}`);
       getWebpage(text)
         .then(unfluffed => {
           //console.log(unfluffed)
@@ -69,10 +73,10 @@ const getWebpage = url => {
       })
       .then(data => {
         if (url.includes('nytimes.com')) {
-          console.log('NY Times URL');
+          //console.logconsole.log('NY Times URL');
           return resolve(nyTimes(data));
         } else {
-          console.log('Other URL');
+          //console.log('Other URL');
           //fetch(cors + 'https://api.adroit78.hasura-app.io/unfluff', {
           fetch(scrapeUrl, {
             body: data,
@@ -112,6 +116,7 @@ class Summariser extends Component {
       keyTerms: [],
       stats: [],
       summary: [],
+      sentiment: [],
       isLoading: false,
       isVisible: false,
       status: 0
@@ -121,13 +126,20 @@ class Summariser extends Component {
   summariseArticle(text, desiredLen) {
     let t0 = performance.now();
     if (desiredLen < 1) desiredLen = 1;
-    this.setState({ isLoading: true, isVisible: true, status: 1 });
-    this.setState({ text: text, desiredLength: desiredLen });
-
-    jsonify(text, desiredLen).then(asJson => {
+    this.setState({
+      isLoading: true,
+      isVisible: true,
+      status: 1
+    });
+    // Default all summary lengths to 10 sentences, slice the returned array later
+    jsonify(text, 10).then(asJson => {
       let parsed = JSON.parse(asJson);
       let senti = sentiment(parsed['text']);
-      this.setState({ status: 2 });
+      let sentiJSON = JSON.stringify({
+        score: senti['score'],
+        comparative: senti['comparative']
+      });
+      this.setState({ status: 2, sentiment: senti });
 
       //fetch(cors + 'https://app.adroit78.hasura-app.io/summarise', {
       fetch(summariseUrl, {
@@ -142,7 +154,7 @@ class Summariser extends Component {
           error => console.log('An error occurred.', error)
         )
         .then(result => {
-          console.log(result);
+          //console.log(result);
           let parsed = JSON.parse(result);
           let t1 = performance.now();
           console.log('Took ' + Math.ceil(t1 - t0) + 'ms');
@@ -150,22 +162,86 @@ class Summariser extends Component {
             namedEnts: parsed[0]['Named Entities'],
             keyTerms: parsed[1]['Key Terms'],
             stats: parsed[2]['Stats'],
-            summary: parsed[3]['Summary'],
-            sentiment: senti,
+            summary: parsed[3]['Summary'].slice(0, desiredLen),
             isLoading: false,
             status: 0
+          });
+          this.props.mutate({
+            variables: {
+              objects: [
+                {
+                  url: this.props.text,
+                  sentiment: sentiJSON,
+                  summary: result
+                }
+              ]
+            }
           });
         });
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.text !== this.props.text)
+    if (
+      !nextProps.data.loading &&
+      nextProps.data.summaries.length <= 0 &&
+      !this.state.isVisible
+    ) {
+      console.log('componentWillReceiveProps summarise trigger');
       this.summariseArticle(nextProps.text, nextProps.desiredLength);
+    } else if (!nextProps.data.loading && !this.state.isVisible) {
+      console.log('componentWillReceiveProps graphql query trigger');
+      let response = JSON.parse(nextProps.data.summaries['0'].summary);
+      let senti = JSON.parse(nextProps.data.summaries['0'].sentiment);
+      this.setState({
+        namedEnts: response[0]['Named Entities'],
+        keyTerms: response[1]['Key Terms'],
+        stats: response[2]['Stats'],
+        summary: response[3]['Summary'].slice(0, nextProps.desiredLength),
+        sentiment: senti,
+        isLoading: false,
+        isVisible: true,
+        status: 0
+      });
+    } else if (nextProps.text !== this.props.text) {
+      console.log('componentWillReceiveProps diff URL summarise trigger');
+      this.setState({
+        namedEnts: [],
+        keyTerms: [],
+        stats: [],
+        summary: [],
+        sentiment: [],
+        isLoading: false,
+        isVisible: true,
+        status: 0
+      });
+      this.summariseArticle(nextProps.text, nextProps.desiredLength);
+    }
   }
 
   componentWillMount() {
-    this.summariseArticle(this.props.text, this.props.desiredLength);
+    if (
+      !this.props.data.loading &&
+      this.props.data.summaries.length <= 0 &&
+      !this.state.isVisible
+    ) {
+      console.log('componentWillMount summarise trigger');
+      this.summariseArticle(this.props.text, this.props.desiredLength);
+    } else if (!this.props.data.loading && !this.state.isVisible) {
+      console.log('componentWillMount graphql query trigger');
+      let response = JSON.parse(this.props.data.summaries['0'].summary);
+      let senti = JSON.parse(this.props.data.summaries['0'].sentiment);
+      this.setState({
+        namedEnts: response[0]['Named Entities'],
+        keyTerms: response[1]['Key Terms'],
+        stats: response[2]['Stats'],
+        summary: response[3]['Summary'].slice(0, this.props.desiredLength),
+        sentiment: senti,
+        isLoading: false,
+        isVisible: true,
+        status: 0
+      });
+    }
   }
 
   render() {
@@ -178,6 +254,14 @@ class Summariser extends Component {
       isLoading,
       status
     } = this.state;
+
+    if (this.props.data.loading) {
+      return <Loading loading={true} loadState={3} />;
+    }
+    if (this.props.data.error) {
+      console.log(this.props.data.error);
+      return <Loading loading={true} loadState={4} />;
+    }
 
     return (
       <div>
@@ -196,4 +280,16 @@ class Summariser extends Component {
   }
 }
 
-export default Summariser;
+const getSummary = graphql(QUERY_SUMMARY, {
+  options: ownProps => ({
+    variables: {
+      url: ownProps.text
+    }
+  })
+});
+
+const insertSummary = graphql(MUTATION_SUMMARY_ADD);
+
+const SummariseWithData = compose(getSummary, insertSummary)(Summariser);
+
+export default SummariseWithData;

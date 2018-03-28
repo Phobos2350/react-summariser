@@ -21,7 +21,7 @@ class Footer extends Component {
           >
             AF02
           </a>{' '}
-          - v0.6.0
+          - v0.7.0
         </p>
         <p>
           Powered by{' '}
