@@ -142,10 +142,10 @@ class Summariser extends Component {
           error => console.log('An error occurred.', error)
         )
         .then(result => {
+          console.log(result);
           let parsed = JSON.parse(result);
           let t1 = performance.now();
           console.log('Took ' + Math.ceil(t1 - t0) + 'ms');
-          console.log(parsed);
           this.setState({
             namedEnts: parsed[0]['Named Entities'],
             keyTerms: parsed[1]['Key Terms'],
